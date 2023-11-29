@@ -20,9 +20,16 @@ export default function expenseTrackerController() {
         res.render("expenses", {expenses});
     }
 
+    async function deleteExpense(req, res) {
+        console.log("--- ", req.params.expenseId)
+        await expenseTrackerServiceInstance.deleteExpense(req.params.expenseId);
+        res.redirect("/expenses")
+    }
+
     return {
         homePage,
         addExpense,
-        allExpenses
+        allExpenses,
+        deleteExpense
     };
 }

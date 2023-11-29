@@ -2,6 +2,7 @@ export default function expenseTrackerService(db) {
     async function allExpenses() {
         const expenses = await db.any(`
             SELECT
+                e.id as expense_id,
                 e.expense,
                 c.category_type,
                 e.total
@@ -49,10 +50,17 @@ export default function expenseTrackerService(db) {
         await db.none("INSERT INTO expense(amount, category_id, expense, total) VALUES($1, $2, $3, $4)", [amount, categoryId, description, amount * categoryQuantity[categoryId]]);
     }
 
+    async function deleteExpense(expenseID) {
+         await db.none("DELETE FROM expense WHERE id = $1",[expenseID]);
+    }
+
+
+
     return {
         allExpenses,
         allCategories,
         addExpense,
         categoryTotals,
+        deleteExpense
     };
 }

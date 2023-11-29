@@ -7,7 +7,8 @@
                 <tr>
                     <th scope="col">Description</th>
                     <th scope="col">Category</th>
-                     <th scope="col">Totals</th>
+                    <th scope="col">Totals</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -16,9 +17,12 @@
                         <td>{{this.expense}} </td>
                         <td>{{this.category_type}}</td>
                         <td>{{this.total}}</td>
+                        <td> <a href="/delete/{{this.expense_id}}">Delete</a></td>
                     </tr>
                 {{/each}}
 
             </tbody>
         </table>
+        <br>
+        <a href="/">Back Home</a>
 </div>
