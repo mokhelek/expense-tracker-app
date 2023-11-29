@@ -6,19 +6,7 @@ let expenseTrackerServiceInstance = expenseTrackerService(db);
 export default function expenseTrackerController() {
     async function homePage(req, res) {
         const categories = await expenseTrackerServiceInstance.allCategories();
-        const categoryTotals = await db.any(`
-            SELECT
-                c.category_type,
-                COALESCE(SUM(e.total), 0) AS total_amount
-            FROM
-                category c
-            LEFT JOIN
-                expense e ON c.id = e.category_id
-            GROUP BY
-                c.category_type, c.id
-            ORDER BY
-                c.id;
-    `);
+        const categoryTotals =  await expenseTrackerServiceInstance.categoryTotals()
         res.render("home", { categories, categoryTotals });
     }
     async function addExpense(req, res) {
@@ -27,8 +15,14 @@ export default function expenseTrackerController() {
         res.redirect("/");
     }
 
+    async function allExpenses(req, res) {
+        const expenses = await expenseTrackerServiceInstance.allExpenses();
+        res.render("expenses", {expenses});
+    }
+
     return {
         homePage,
         addExpense,
+        allExpenses
     };
 }
