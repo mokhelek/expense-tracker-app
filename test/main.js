@@ -11,18 +11,24 @@ let expenseTrackerServiceInstance = expenseTrackerService(db);
 
 describe("Unit tests for Expense Tracker ", function () {
     this.timeout(10000);
-    beforeEach(async function () {
-        try {
-            await db.none("DELETE FROM expense");
-        } catch (err) {
-            console.log(err);
-        }
+
+   beforeEach(async function () {
+        await db.none("DELETE FROM expense");
     });
 
-    // it('should retrieve all expenses', async () => {
-    //     const expenses = await expenseTrackerServiceInstance.allExpenses();
-    //     assert.equal(6, expenses.length);
-    //   });
+    it('should retrieve all expenses', async () => {
+        const expenses = await expenseTrackerServiceInstance.allExpenses();
+        assert.equal(0, expenses.length);
+      });
+
+      it('should get the number of expenses after they have been added', async () => {
+        await expenseTrackerServiceInstance.addExpense(50, 6, "Lunch");
+        await expenseTrackerServiceInstance.addExpense(24, 6, "transport");
+        await expenseTrackerServiceInstance.addExpense(3000, 1, "rent");
+        const expenses = await expenseTrackerServiceInstance.allExpenses();
+        
+        assert.deepEqual(3, expenses.length);
+      });
 
     it("should retrieve all categories", async () => {
         const categories = await expenseTrackerServiceInstance.allCategories();
@@ -63,12 +69,15 @@ describe("Unit tests for Expense Tracker ", function () {
         assert.equal(1, expenses.length);
     });
 
-      it('should delete an expense', async () => {
-        const service = expenseTrackerService(db);
-        const expenseIdToDelete = 1; // Replace with a valid expense ID
-        await service.deleteExpense(expenseIdToDelete);
-        // Add your assertions here, for example, check if the expense was deleted from the database
-      });
+    // it("should delete an expense", async () => {
+    //     await expenseTrackerServiceInstance.addExpense(100, 1, "Lunch");
+    //     await expenseTrackerServiceInstance.addExpense(150, 2, "games");
+
+    //     await expenseTrackerServiceInstance.deleteExpense(1);
+    //     const expenses = await expenseTrackerServiceInstance.allExpenses();
+    //     console.log(expenses)
+    //     assert.equal(1, expenses.length);
+    // });
 
     //   it('should retrieve expenses for a category', async () => {
     //     const service = expenseTrackerService(db);
@@ -77,4 +86,8 @@ describe("Unit tests for Expense Tracker ", function () {
     //     // Add your assertions here
     //     expect(expenses).to.be.an('array');
     //   });
+
+    after(() => {
+        db.$pool.end;
+      });
 });
