@@ -79,13 +79,14 @@ describe("Unit tests for Expense Tracker ", function () {
     //     assert.equal(1, expenses.length);
     // });
 
-    //   it('should retrieve expenses for a category', async () => {
-    //     const service = expenseTrackerService(db);
-    //     const categoryId = 1; // Replace with a valid category ID
-    //     const expenses = await service.expenseForCategory(categoryId);
-    //     // Add your assertions here
-    //     expect(expenses).to.be.an('array');
-    //   });
+      it('should retrieve expenses for a category', async () => {
+        await expenseTrackerServiceInstance.addExpense(50, 6, "Lunch");
+        await expenseTrackerServiceInstance.addExpense(24, 6, "transport");
+        await expenseTrackerServiceInstance.addExpense(3000, 1, "rent");
+        const expenses = await expenseTrackerServiceInstance.expenseForCategory(6);
+
+        assert.equal(2, expenses.length);
+      });
 
     after(() => {
         db.$pool.end;
