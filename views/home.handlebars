@@ -16,13 +16,14 @@
 
             <div class="form-group">
                 <label>Choose Category:</label><br />
-
-                {{#each categories}}
-                    <div class="form-check">
-                        <label class="form-check-label" for="{{this.id}}">{{this.category_type}}</label>
-                        <input type="radio" class="form-check-input" id="{{this.id}}" name="categoryId" value="{{this.id}}" />
-                    </div>
-                {{/each}}
+                <div class="row" >
+                    {{#each categories}}
+                        <div  style="margin-bottom: 1rem;margin-top:1rem" class="col-3 form-check">
+                            <label class="form-check-label" for="{{this.id}}">{{this.category_type}}</label>
+                            <input type="radio" class="form-check-input" id="{{this.id}}" name="categoryId" value="{{this.id}}" />
+                        </div>
+                    {{/each}}
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -54,6 +55,10 @@
             </tbody>
         </table>
 
-        <a href="/expenses"> View Expenses</a>
+        <a href="/expenses" class="btn btn-primary" > View Expenses</a>
+
+        <br>
+        <br>
+
     </div>
 </div>
