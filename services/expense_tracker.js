@@ -54,6 +54,11 @@ export default function expenseTrackerService(db) {
          await db.none("DELETE FROM expense WHERE id = $1",[expenseID]);
     }
 
+    async function expenseForCategory(categoryId) {
+        const expenses = await db.many("SELECT * FROM expense WHERE category_id = $1",[categoryId]);
+        return expenses;
+    }
+
 
 
     return {
@@ -61,6 +66,8 @@ export default function expenseTrackerService(db) {
         allCategories,
         addExpense,
         categoryTotals,
-        deleteExpense
+        deleteExpense,
+        expenseForCategory
+        
     };
 }

@@ -6,9 +6,14 @@ let expenseTrackerServiceInstance = expenseTrackerService(db);
 export default function expenseTrackerController() {
     async function homePage(req, res) {
         const categories = await expenseTrackerServiceInstance.allCategories();
-        const categoryTotals =  await expenseTrackerServiceInstance.categoryTotals()
-        res.render("home", { categories, categoryTotals });
+        const categoryTotals = await expenseTrackerServiceInstance.categoryTotals();
+        let totalExpenses = 0;
+        for (let amount of categoryTotals) {
+            totalExpenses += Number(amount.total_amount);
+        }
+        res.render("home", { categories, categoryTotals, totalExpenses });
     }
+    
     async function addExpense(req, res) {
         const { amount, description, categoryId } = req.body;
         await expenseTrackerServiceInstance.addExpense(Number(amount), categoryId, description);
@@ -17,19 +22,18 @@ export default function expenseTrackerController() {
 
     async function allExpenses(req, res) {
         const expenses = await expenseTrackerServiceInstance.allExpenses();
-        res.render("expenses", {expenses});
+        res.render("expenses", { expenses });
     }
 
     async function deleteExpense(req, res) {
-        console.log("--- ", req.params.expenseId)
         await expenseTrackerServiceInstance.deleteExpense(req.params.expenseId);
-        res.redirect("/expenses")
+        res.redirect("/expenses");
     }
 
     return {
         homePage,
         addExpense,
         allExpenses,
-        deleteExpense
+        deleteExpense,
     };
 }
