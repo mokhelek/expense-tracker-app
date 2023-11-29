@@ -1,6 +1,6 @@
 <div class="container d-flex justify-content-center">
-    <div class="col-md-7" >
-    <br>
+    <div class="col-md-7">
+        <br />
         <form action="/" method="post">
             <div class="form-group">
                 <label for="description">Description:</label>
@@ -14,16 +14,39 @@
 
             <div class="form-group">
                 <label>Choose Category:</label><br />
-               
-               {{#each categories}}
-                <div class="form-check">
-                    <label class="form-check-label" for="{{this.id}}">{{this.category_type}}</label>
-                    <input type="radio" class="form-check-input" id="{{this.id}}" name="categoryId" value="{{this.id}}" />
-                </div>
+
+                {{#each categories}}
+                    <div class="form-check">
+                        <label class="form-check-label" for="{{this.id}}">{{this.category_type}}</label>
+                        <input type="radio" class="form-check-input" id="{{this.id}}" name="categoryId" value="{{this.id}}" />
+                    </div>
                 {{/each}}
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <hr />
+
+        <h5>Total expenses <span> R3000 </span></h5>
+        <h5>Expense summery per Category</h5>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Totals</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each categoryTotals}}
+                    <tr>
+                        <td>{{this.category_type}} </td>
+                        <td>{{this.total_amount}}</td>
+                    </tr>
+                {{/each}}
+
+            </tbody>
+        </table>
+
     </div>
 </div>
