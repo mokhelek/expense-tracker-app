@@ -23,16 +23,17 @@ export default function expenseTrackerService(db) {
     async function categoryTotals() {
         const categoryTotals = await db.any(`
             SELECT
-                c.category_type,
-                COALESCE(SUM(e.total), 0) AS total_amount
+            category.id AS category_id,
+            category.category_type,
+            COALESCE(SUM(expense.total), 0) AS total_amount
             FROM
-                category c
+                category
             LEFT JOIN
-                expense e ON c.id = e.category_id
+                expense ON category.id = expense.category_id
             GROUP BY
-                c.category_type, c.id
+                category.id, category.category_type
             ORDER BY
-                c.id;
+                category.id;
     `);
 
         return categoryTotals;
@@ -55,8 +56,25 @@ export default function expenseTrackerService(db) {
     }
 
     async function expenseForCategory(categoryId) {
-        const expenses = await db.many("SELECT * FROM expense WHERE category_id = $1",[categoryId]);
+       
+        const query = `
+        SELECT
+            e.id as expense_id,
+            e.expense,
+            c.category_type,
+            e.total
+        FROM
+            expense e
+        JOIN
+            category c ON e.category_id = c.id 
+        WHERE
+            category_id = $1
+        `;
+
+        const expenses = await db.many(query, [categoryId]);
+
         return expenses;
+
     }
 
 

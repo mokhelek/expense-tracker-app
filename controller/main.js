@@ -7,6 +7,7 @@ export default function expenseTrackerController() {
     async function homePage(req, res) {
         const categories = await expenseTrackerServiceInstance.allCategories();
         const categoryTotals = await expenseTrackerServiceInstance.categoryTotals();
+        console.log("C totals ", categoryTotals)
         let totalExpenses = 0;
         for (let amount of categoryTotals) {
             totalExpenses += Number(amount.total_amount);
@@ -25,6 +26,12 @@ export default function expenseTrackerController() {
         res.render("expenses", { expenses });
     }
 
+    async function expensesForCategory(req, res) {
+        console.log("--- ", req.params.categoryId)
+        const expenses = await expenseTrackerServiceInstance.expenseForCategory(req.params.categoryId);
+        res.render("expensesForCategory", { expenses });
+    }
+
     async function deleteExpense(req, res) {
         await expenseTrackerServiceInstance.deleteExpense(req.params.expenseId);
         res.redirect("/expenses");
@@ -34,6 +41,7 @@ export default function expenseTrackerController() {
         homePage,
         addExpense,
         allExpenses,
+        expensesForCategory,
         deleteExpense,
     };
 }

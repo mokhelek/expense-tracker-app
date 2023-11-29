@@ -9,6 +9,7 @@ let trackerControllerInstance = expenseTrackerController();
 router.get("/", trackerControllerInstance.homePage );
 router.post("/", trackerControllerInstance.addExpense );
 router.get("/expenses", trackerControllerInstance.allExpenses );
+router.get("/expenses/:categoryId", trackerControllerInstance.expensesForCategory );
 router.get("/delete/:expenseId", trackerControllerInstance.deleteExpense );
 
 
