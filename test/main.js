@@ -77,7 +77,7 @@ describe("Unit tests for Expense Tracker ", function () {
     //     const expenses = await expenseTrackerServiceInstance.allExpenses();
     //     console.log(expenses)
     //     assert.equal(1, expenses.length);
-    // });
+    // }); 
 
       it('should retrieve expenses for a category', async () => {
         await expenseTrackerServiceInstance.addExpense(50, 6, "Lunch");
