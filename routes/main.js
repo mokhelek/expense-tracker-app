@@ -6,6 +6,11 @@ var router = express.Router();
 
 let trackerControllerInstance = expenseTrackerController();
 
+/*
+    Bellow are the routes for navigating to the different pages and
+    performing different requests
+*/
+
 router.get("/", trackerControllerInstance.homePage );
 router.post("/", trackerControllerInstance.addExpense );
 router.get("/expenses", trackerControllerInstance.allExpenses );
